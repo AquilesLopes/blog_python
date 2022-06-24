@@ -23,11 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 with open('./conf/secret_key.txt') as f:
      SECRET_KEY = f.read().strip()
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -75,19 +70,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'blog.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog_django',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
 
 
 # Password validation
@@ -121,6 +103,13 @@ USE_I18N = True
 USE_TZ = True
 
 
+###### settings.py
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
@@ -128,6 +117,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'resources' / 'static'
 ]
+STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_ROOT = BASE_DIR / 'resources' / 'media'
 MEDIA_URL = '/media/'
@@ -150,3 +140,10 @@ MESSAGE_TAGS = {
 
 INSTALLED_APPS += ('django_summernote',)
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+try:
+    from .local_settings import *
+except:
+    pass
+
+
